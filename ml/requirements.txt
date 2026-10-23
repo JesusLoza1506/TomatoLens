@@ -1,0 +1,7 @@
+tensorflow>=2.13.0,<2.16.0
+numpy
+pillow
+scikit-learn
+matplotlib
+pytest
+ruff
