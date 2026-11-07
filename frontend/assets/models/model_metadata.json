@@ -1,0 +1,28 @@
+{
+  "model_version": "legacy-v1",
+  "input_shape": [
+    1,
+    224,
+    224,
+    3
+  ],
+  "input_dtype": "float32",
+  "input_range": [
+    0,
+    255
+  ],
+  "color_order": "RGB",
+  "resize": "half_pixel_bilinear_v1",
+  "internal_rescaling": {
+    "scale": 0.00392156862745098,
+    "offset": 0
+  },
+  "labels": [
+    "early_blight",
+    "healthy",
+    "late_blight"
+  ],
+  "sha256": "9ff88aa87497262babb40c9c71b0da1d6d8f17e5652bba35aed80a0f7eb3056b",
+  "independently_evaluated": false,
+  "note": "Modelo inicial corregido en integración; pendiente reentrenamiento."
+}

@@ -1,0 +1,11 @@
+{
+  "tensorflow-cpu": "2.15.1",
+  "keras": "2.15.0",
+  "numpy": "1.26.4",
+  "Pillow": "11.1.0",
+  "scikit-learn": "1.6.1",
+  "matplotlib": "3.10.0",
+  "pytest": "8.3.4",
+  "ruff": "0.9.3",
+  "python": "3.11.17 (main, Oct 21 2026, 17:46:53) [Clang 23.1.3 ]"
+}

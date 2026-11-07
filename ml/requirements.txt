@@ -1,7 +1,8 @@
-tensorflow>=2.13.0,<2.16.0
-numpy
-pillow
-scikit-learn
-matplotlib
-pytest
-ruff
+# Reproducible baseline: Python 3.11, TensorFlow/Keras 2.15. Existing model uses Keras 2.
+tensorflow==2.15.1
+numpy==1.26.4
+Pillow==11.1.0
+scikit-learn==1.6.1
+matplotlib==3.10.0
+pytest==8.3.4
+ruff==0.9.3

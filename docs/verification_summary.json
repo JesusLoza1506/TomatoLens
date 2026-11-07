@@ -1,0 +1,23 @@
+{
+  "python_unit_tests": "6 passed",
+  "ruff": "passed",
+  "training_smoke": {
+    "synthetic_images": 60,
+    "train": 42,
+    "validation": 9,
+    "test": 9,
+    "head_epochs": 1,
+    "finetune_epochs": 1,
+    "prepare_train_evaluate_export": "passed",
+    "agronomic_accuracy_claim": false
+  },
+  "original_weights_changed": false,
+  "sample_correct_with_original_flutter_preprocessing": 3,
+  "sample_correct_with_fixed_preprocessing": 9,
+  "sample_count": 9,
+  "independent_test_set": false,
+  "flutter_format_syntax": "passed",
+  "flutter_analyze_test_build": "not executed - automatic approval blocked Flutter bootstrap metadata access",
+  "android_device_test": "pending on user device",
+  "complete_dataset_training_v2": "pending: 4500-image dataset not supplied"
+}
