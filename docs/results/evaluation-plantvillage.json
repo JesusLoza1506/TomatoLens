@@ -1,0 +1,48 @@
+{
+  "early_blight": {
+    "precision": 0.9019607843137255,
+    "recall": 0.92,
+    "f1-score": 0.9108910891089109,
+    "support": 150.0
+  },
+  "healthy": {
+    "precision": 0.9795081967213115,
+    "recall": 1.0,
+    "f1-score": 0.989648033126294,
+    "support": 239.0
+  },
+  "late_blight": {
+    "precision": 0.974910394265233,
+    "recall": 0.9477351916376306,
+    "f1-score": 0.9611307420494699,
+    "support": 287.0
+  },
+  "accuracy": 0.9600591715976331,
+  "macro avg": {
+    "precision": 0.9521264584334234,
+    "recall": 0.955911730545877,
+    "f1-score": 0.9538899547615584,
+    "support": 676.0
+  },
+  "weighted avg": {
+    "precision": 0.9603489050555829,
+    "recall": 0.9600591715976331,
+    "f1-score": 0.9600651867628975,
+    "support": 676.0
+  },
+  "test_images": 676,
+  "identity": {
+    "model_sha256": "e077a3832d6387f2794296c266d0c5fb70e9c88ad0568bf3de0db513f1ce3303",
+    "splits_sha256": "5499a00af034ed85e9fc160b5465cd4f36a33eaf9c6418ec398693afadf2128a"
+  },
+  "split": "test",
+  "decision_policy_sha256": "f300381b2a9efc8583d54ba60c1cd4e90fa32d31c36e6b016cc3529c7f071ac6",
+  "decision_policy_on_test": {
+    "total": 676,
+    "accepted": 656,
+    "correct_accepted": 639,
+    "coverage": 0.9704142011834319,
+    "accuracy_when_accepted": 0.9740853658536586
+  },
+  "scope": "Partición PlantVillage; no mide generalización en campo."
+}
