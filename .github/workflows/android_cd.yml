@@ -1,0 +1,89 @@
+name: Android CD
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  version:
+    name: Validar etiqueta de versión
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Comparar la etiqueta con pubspec.yaml
+        shell: bash
+        run: |
+          version="$(awk '$1 == "version:" { gsub(/\r/, "", $2); print $2; exit }' frontend/pubspec.yaml)"
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ || "$GITHUB_REF_NAME" != "v${version%%+*}" ]]; then
+            echo "::error::La etiqueta debe tener formato vX.Y.Z y coincidir con version en frontend/pubspec.yaml (actual: $version)."
+            exit 1
+          fi
+
+  flutter:
+    name: Validar Flutter de esta versión
+    needs: version
+    uses: ./.github/workflows/flutter_ci.yml
+    with:
+      build-debug: false
+
+  ml:
+    name: Validar ML de esta versión
+    needs: version
+    uses: ./.github/workflows/ml_ci.yml
+
+  release:
+    name: Generar APK release para entrega interna
+    needs: [flutter, ml]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Descargar el mismo código validado
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '17'
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.7'
+          channel: stable
+          cache: true
+
+      - name: Compilar APK release
+        run: |
+          flutter config --jdk-dir "$JAVA_HOME"
+          flutter pub get --enforce-lockfile
+          flutter build apk --release --no-pub
+
+      - name: Preparar APK y suma de verificación
+        shell: bash
+        run: |
+          mkdir -p build/ci-release
+          apk="TomatoLens-${GITHUB_REF_NAME}-release.apk"
+          cp build/app/outputs/flutter-apk/app-release.apk "build/ci-release/$apk"
+          cd build/ci-release
+          sha256sum "$apk" > SHA256SUMS.txt
+          printf 'Version: %s\nCommit: %s\n' "$GITHUB_REF_NAME" "$GITHUB_SHA" > VERSION.txt
+
+      - name: Guardar APK release interno
+        uses: actions/upload-artifact@v4
+        with:
+          name: tomatolens-${{ github.ref_name }}-release
+          path: frontend/build/ci-release/
+          if-no-files-found: error
+          retention-days: 30

@@ -304,8 +304,15 @@ class _HomeShellState extends State<HomeShell> {
   Future<void> _save() async {
     final result = _result;
     final bytes = _image;
-    if (result == null || bytes == null || _saving || _saved || _deleting ||
-        _changingPreferences || !_preferencesReady) return;
+    if (result == null ||
+        bytes == null ||
+        _saving ||
+        _saved ||
+        _deleting ||
+        _changingPreferences ||
+        !_preferencesReady) {
+      return;
+    }
     setState(() => _saving = true);
     try {
       await widget.history.save(result, _preferences.keepPhoto ? bytes : null);

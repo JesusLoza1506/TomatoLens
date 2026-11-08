@@ -1,5 +1,5 @@
 {
-  "model_version": "legacy-v1",
+  "model_version": "mobilenet-v2-e077a3832d63",
   "input_shape": [
     1,
     224,
@@ -14,15 +14,23 @@
   "color_order": "RGB",
   "resize": "half_pixel_bilinear_v1",
   "internal_rescaling": {
-    "scale": 0.00392156862745098,
-    "offset": 0
+    "scale": 0.00784313725490196,
+    "offset": -1
   },
   "labels": [
     "early_blight",
     "healthy",
     "late_blight"
   ],
-  "sha256": "9ff88aa87497262babb40c9c71b0da1d6d8f17e5652bba35aed80a0f7eb3056b",
-  "independently_evaluated": false,
-  "note": "Modelo inicial corregido en integración; pendiente reentrenamiento."
+  "sha256": "fa980aac1c0fc517ea3f3187eec43a37aaca15b35fe915fdc473b3b4edc0933b",
+  "parity_reference_sha256": "20d9ca5a20c811d99e841d41e936cf6dd52c2873d9b2da4b54b8ff61a0cc6b56",
+  "independently_evaluated": true,
+  "model_sha256": "e077a3832d6387f2794296c266d0c5fb70e9c88ad0568bf3de0db513f1ce3303",
+  "splits_sha256": "5499a00af034ed85e9fc160b5465cd4f36a33eaf9c6418ec398693afadf2128a",
+  "evaluation_sha256": "467f8e21fd62a34ec2e634ce317ee8115a4696eb5d491c6dedd55a4d6d71b84e",
+  "decision_policy": {
+    "min_score": 0.6673963069915771,
+    "validation_policy_sha256": "f300381b2a9efc8583d54ba60c1cd4e90fa32d31c36e6b016cc3529c7f071ac6"
+  },
+  "note": "Consultar evaluation.json del experimento; el score Softmax no es certeza diagnóstica."
 }

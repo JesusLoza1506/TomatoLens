@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui' as ui;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -75,9 +76,10 @@ class LocalClassifier implements Classifier {
     final model = _model;
     if (model == null) throw StateError('El modelo todavía no está listo.');
     final watch = Stopwatch()..start();
+    final inferenceImage = await _canonicalInferenceImage(bytes);
     final scores = await compute(runInference, {
       'model': model,
-      'image': bytes,
+      'image': inferenceImage,
     });
     final now = DateTime.now().toUtc();
     return Analysis(
@@ -89,6 +91,34 @@ class LocalClassifier implements Classifier {
       inconclusive: _minScore != null &&
           scores.reduce((a, b) => a > b ? a : b) < _minScore!,
     );
+  }
+}
+
+// JPEG parity: native decode before the shared RGB preprocessing.
+Future<Uint8List> _canonicalInferenceImage(Uint8List bytes) async {
+  if (bytes.length < 3 ||
+      bytes[0] != 0xff ||
+      bytes[1] != 0xd8 ||
+      bytes[2] != 0xff) {
+    return bytes;
+  }
+
+  // Keep the original size. The shared worker still performs the 224x224
+  // bilinear resize. PNG preserves the pixels from the native JPEG decoder.
+  final codec = await ui.instantiateImageCodec(bytes);
+  try {
+    final frame = await codec.getNextFrame();
+    try {
+      final data = await frame.image.toByteData(format: ui.ImageByteFormat.png);
+      if (data == null) {
+        throw const FormatException('No se pudo preparar la imagen JPG.');
+      }
+      return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    } finally {
+      frame.image.dispose();
+    }
+  } finally {
+    codec.dispose();
   }
 }
 

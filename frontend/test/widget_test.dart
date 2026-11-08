@@ -114,8 +114,12 @@ void main() {
     await tester.tap(find.text('Comenzar análisis'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Galería'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(FilledButton, 'Analizar hoja'));
+    // The progress indicator keeps ticking while the preview awaits input.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    final analyzeButton = find.widgetWithText(FilledButton, 'Analizar hoja');
+    expect(analyzeButton, findsOneWidget);
+    await tester.tap(analyzeButton);
     await tester.pumpAndSettle();
     expect(history.rows.single.categoryKey, 'healthy');
     expect(history.lastBytes, isNull);
